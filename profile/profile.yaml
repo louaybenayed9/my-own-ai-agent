@@ -1,0 +1,124 @@
+# =====================================================================
+# MY PERSONAL PROFILE DATABASE
+# ---------------------------------------------------------------------
+# This file is your agent's single source of truth about you for job
+# applications. The agent reads it live via its get_profile tool, so:
+#   * Edit this file, save, and the agent sees changes IMMEDIATELY
+#     (no restart needed).
+#   * Replace EVERY sample value below with your real information.
+#   * Delete any section that does not apply to you.
+#   * Add any fields you want — the agent reads whatever is here.
+# =====================================================================
+
+_meta:
+  last_updated: "2026-10-06"
+  note: "SAMPLE DATA — replace all values before real use"
+
+# ---------------------------------------------------------------------
+# BASICS — contact details and where to find you online
+# ---------------------------------------------------------------------
+basics:
+  name: "Alex Sample"                     # REPLACE: your full name
+  email: "alex.sample@example.com"        # REPLACE
+  phone: "+1-555-0100"                    # REPLACE
+  location: "City, Country"               # REPLACE
+  linkedin: "https://linkedin.com/in/your-handle"   # REPLACE
+  github: "https://github.com/your-handle"          # REPLACE
+  portfolio: ""                           # REPLACE: personal site/URL (optional)
+  work_authorization: ""                  # e.g. "US Citizen", "EU work permit", "Needs sponsorship"
+
+# ---------------------------------------------------------------------
+# SUMMARY — your elevator pitch (2-3 sentences the agent can reuse)
+# ---------------------------------------------------------------------
+summary: >
+  REPLACE: e.g. "Software engineer with 4 years of experience building
+  backend services in Python and Go. Shipped features used by 100k+ users.
+  Looking for backend or platform engineering roles."
+
+# ---------------------------------------------------------------------
+# EDUCATION — most recent first
+# ---------------------------------------------------------------------
+education:
+  - school: "REPLACE: University name"
+    degree: "REPLACE: BSc Computer Science"
+    dates: "2019 - 2023"
+    highlights:
+      - "REPLACE: GPA, thesis, relevant coursework, honors"
+
+# ---------------------------------------------------------------------
+# WORK EXPERIENCE — most recent first; use action verbs + numbers
+# ---------------------------------------------------------------------
+experience:
+  - company: "REPLACE: Company name"
+    title: "REPLACE: Job title"
+    dates: "2023 - Present"
+    location: "REPLACE: City or Remote"
+    highlights:
+      - "REPLACE: Built X which improved Y by Z%"
+      - "REPLACE: Led/migrated/designed ..."
+
+# ---------------------------------------------------------------------
+# PROJECTS — personal or open-source work worth showing
+# ---------------------------------------------------------------------
+projects:
+  - name: "Personal AI Agent"
+    description: "Self-hosted AI agent (n8n + Python microservices) with browsing, persistent memory, and skill packs."
+    tech: ["Python", "Docker", "n8n", "FastAPI"]
+    link: ""
+  # - name: "REPLACE: another project"
+
+# ---------------------------------------------------------------------
+# SKILLS — grouped; the agent pulls from here for ATS keyword matching
+# ---------------------------------------------------------------------
+skills:
+  languages: ["Python", "REPLACE: ..."]
+  frameworks: ["FastAPI", "REPLACE: ..."]
+  tools: ["Docker", "Git", "REPLACE: ..."]
+  soft_skills: ["REPLACE: e.g. technical writing, mentoring"]
+
+# ---------------------------------------------------------------------
+# CERTIFICATIONS & TRAINING
+# ---------------------------------------------------------------------
+certifications:
+  - name: "REPLACE: cert name (or delete section)"
+    issuer: "REPLACE"
+    year: "2025"
+
+# ---------------------------------------------------------------------
+# LANGUAGES YOU SPEAK
+# ---------------------------------------------------------------------
+languages_spoken:
+  - name: "REPLACE: e.g. Arabic"
+    level: "Native"
+  - name: "English"
+    level: "Fluent"
+
+# ---------------------------------------------------------------------
+# AWARDS / ACHIEVEMENTS (optional — delete if empty)
+# ---------------------------------------------------------------------
+awards: []
+  # - "REPLACE: Hackathon winner 2024"
+
+# ---------------------------------------------------------------------
+# JOB PREFERENCES — what you are looking for right now
+# ---------------------------------------------------------------------
+job_preferences:
+  target_roles: ["REPLACE: e.g. Backend Engineer", "Platform Engineer"]
+  industries: ["REPLACE: e.g. fintech, AI"]
+  locations: ["REPLACE: e.g. Remote (EU)", "Berlin"]
+  remote_ok: true
+  salary_expectation: ""                  # leave empty if private
+  notice_period: ""                       # e.g. "2 weeks", "immediate"
+  employment_types: ["full-time"]         # full-time, contract, internship
+
+# ---------------------------------------------------------------------
+# APPLICATION EXTRAS — reusable answers the agent can adapt
+# ---------------------------------------------------------------------
+application_extras:
+  why_hire_me: >
+    REPLACE: 2-3 sentences on your strongest selling points.
+  strengths: ["REPLACE: strength 1", "REPLACE: strength 2"]
+  weaknesses: ""                          # optional; how you frame yours
+  career_goals: >
+    REPLACE: where you want to be in 3-5 years.
+  extra_notes: ""                         # anything else the agent should know

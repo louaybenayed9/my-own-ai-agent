@@ -1,0 +1,94 @@
+services:
+  litellm:
+    build: ./litellm
+    container_name: agent-litellm
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY:-sk-master-vik}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health/liveliness", "-H", "Authorization: Bearer $${LITELLM_MASTER_KEY:-sk-master-vik}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: agent-n8n
+    restart: unless-stopped
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-UTC}
+      # allow {{ $env.* }} expressions used by the workflow tools
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # recommended by n8n for AI/Code nodes
+      - N8N_RUNNERS_ENABLED=true
+      # verbose logging was for first-run debugging; drop to info for daily use
+      - N8N_LOG_LEVEL=info
+      # injected into the agent workflow
+      - OPENROUTER_MODEL=${OPENROUTER_MODEL:-anthropic/claude-sonnet-4.5}
+      - LITELLM_URL=${LITELLM_URL:-http://litellm:4000}
+      - SKILLS_URL=${SKILLS_URL:-http://skills:8000}
+      - BROWSER_URL=${BROWSER_URL:-http://browser:8000}
+      - AGENTMEMORY_REST_URL=${AGENTMEMORY_REST_URL:-http://host.docker.internal:3111/agentmemory}
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - n8n-data:/home/node/.n8n
+      - ./n8n/workflows:/workflows:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - skills
+      - browser
+
+  skills:
+    build: ./skills-service
+    container_name: agent-skills
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - SKILLS_DIR=/app/skills
+      - PROFILE_PATH=/app/profile.yaml
+    volumes:
+      # profile database: live-editable, no rebuild needed
+      - ./profile/profile.yaml:/app/profile.yaml:ro
+      # personality file: live-editable, no rebuild needed
+      - ./soul/soul.md:/app/soul.md:ro
+      # knowledge folder (CVs, docs): live RAG over .md .txt .pdf .docx
+      - ./knowledge:/app/knowledge:ro
+      # skill packs: drop a new <name>/SKILL.md in and it appears instantly
+      - ./skills-service/skills:/app/skills:ro
+
+  browser:
+    build: ./browser-service
+    container_name: agent-browser
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_MODEL=${OPENROUTER_MODEL:-anthropic/claude-sonnet-4.5}
+      - BROWSER_HEADLESS=${BROWSER_HEADLESS:-true}
+      - BROWSER_MAX_STEPS=${BROWSER_MAX_STEPS:-20}
+      - LITELLM_URL=${LITELLM_URL:-http://litellm:4000}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY:-sk-master-vik}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    shm_size: 2gb
+    depends_on:
+      - litellm
+
+volumes:
+  n8n-data:

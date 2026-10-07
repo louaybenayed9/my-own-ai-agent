@@ -1,0 +1,575 @@
+{
+  "id": "9f1e2d3c-4b5a-6789-8abc-def012345678",
+  "name": "Personal AI Agent",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Personal AI Agent\n\nPowered by OpenRouter (multi-provider LLM).\n\n**Tools wired in:**\n- remember_memory / search_memory \u2014 persistent memory via agentmemory REST (localhost:3111)\n- list_skills / run_skill \u2014 skill packs from the skills service\n- get_profile \u2014 the user's personal profile database (job applications)\n- browse_web \u2014 real browser automation via browser-use sidecar\n\n**Chat:** built-in chat UI (Open chat) or POST {\"message\": \"...\"} to /webhook/agent.\n\n**Setup after import:** select your OpenRouter credential in the Chat Model node.",
+        "height": 260,
+        "width": 360
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000001",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000002",
+      "name": "Agent Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        220
+      ],
+      "webhookId": "agent-webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000003",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -40
+      ],
+      "webhookId": "agent-chat"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput ?? $json.body?.message ?? $json.message }}",
+        "options": {
+          "systemMessage": "={{ \"Current date: \" + $now.toFormat(\"yyyy-MM-dd (cccc)\") + \"\\n\\n\" + ($json.soul ? $json.soul + \"\\n\\n\" : \"\") + \"You are a capable personal AI agent running on n8n.\\n\\n# Operating protocol\\n1. MEMORY FIRST: At the start of a task, call search_memory for relevant stored knowledge about the user and prior work. Use what you find; never ask what the user already told you before.\\n2.5 DOCUMENTS: The user's document folder (resumes, certificates, cover letters, notes \u2014 .txt/.md/.pdf/.docx/.doc) is accessible via search_docs (keyword search; full_doc=true returns whole documents) and read_docs (full text of one document, or name='all' for EVERY document). When the user asks you to read their folder/all documents/database, call read_docs with name='all'. For experience, skills, or certificate questions, call search_docs first and cite the source file name. For CURRENT role, timeline, or education-order questions, use search_docs with full_doc=true and read the complete document before answering \u2014 snippets alone can mislead about which job is current.\\n2. SKILLS: For tasks matching an available skill (see list_skills), call run_skill with the skill name and the user's request, then follow the returned instructions to produce your answer. If unsure which skill applies, call list_skills first.\\n3. PROFILE: For resumes, CVs, cover letters, job applications, or ANY question about the user's background (experience, education, skills, contact info), call get_profile first and use only facts from it.\\n4. BROWSER: For anything requiring live web pages, browsing, or form interaction, use the browse_web tool with a clear, self-contained task description.\\n5. MEMORY LAST: When the user shares durable preferences, facts, or you complete a non-trivial task, store a concise note with remember_memory.\\n6. If a tool fails, say so plainly, then answer from your own knowledge with a caveat.\\n\\n# Style\\n- Be direct and concise. Lead with the answer, then supporting detail.\\n- Use markdown formatting and code blocks where appropriate.\" }}"
+        }
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000004",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        240,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "openrouter/free",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000005",
+      "name": "LLM (via LiteLLM proxy)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        340
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "b8d4f2a1-5678-4abc-9def-0123456789cd",
+          "name": "LiteLLM Proxy (OpenRouter+Gemini+Groq)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId ?? $json.body?.sessionId ?? 'cli' }}",
+        "contextWindowLength": 10,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000006",
+      "name": "Session Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        200,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Load the agent's personality file (soul.md). Call this if you need to re-read your identity, voice, values, quirks, or boundaries.",
+        "url": "={{ $env.SKILLS_URL }}/soul",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000g",
+      "name": "get_soul",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Store a durable memory about the user, their preferences, decisions, or a completed task outcome, so future sessions can recall it. Keep the content concise and self-contained.",
+        "method": "POST",
+        "url": "={{ $env.AGENTMEMORY_REST_URL }}/remember",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "content",
+              "valueProvider": "modelRequired"
+            },
+            {
+              "name": "project",
+              "valueProvider": "fieldValue",
+              "value": "personal-agent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000007",
+      "name": "remember_memory",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        340,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search long-term memory for relevant facts about the user, prior decisions, and past work. Call this at the start of a task or whenever user history could help.",
+        "method": "POST",
+        "url": "={{ $env.AGENTMEMORY_REST_URL }}/smart-search",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "query",
+              "valueProvider": "modelRequired"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000c",
+      "name": "search_memory",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        410,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "List the available skill packs with their names and descriptions. Call this when a task might benefit from a specialized workflow (diagrams, scientific analysis, security review, ...).",
+        "url": "={{ $env.SKILLS_URL }}/skills",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000008",
+      "name": "list_skills",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Load and apply a named skill to the user's request. Returns the skill's instructions to follow. Use a name exactly as returned by list_skills.",
+        "method": "POST",
+        "url": "={{ $env.SKILLS_URL }}/skills/execute",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "name",
+              "valueProvider": "modelRequired"
+            },
+            {
+              "name": "input",
+              "valueProvider": "modelRequired"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-000000000009",
+      "name": "run_skill",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Drive a real web browser to complete a task: open pages, read content, fill forms, click. Provide a clear, self-contained task; returns the final result text. Can take a few minutes.",
+        "method": "POST",
+        "url": "={{ $env.BROWSER_URL }}/browse",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "task",
+              "valueProvider": "modelRequired"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-00000000000a",
+      "name": "browse_web",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Load the user's complete personal profile database: contact info, summary, education, work experience, projects, skills, certifications, languages, job preferences, and reusable application answers. Call this for any resume, CV, cover letter, job application, or background question.",
+        "url": "={{ $env.SKILLS_URL }}/profile",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-00000000000d",
+      "name": "get_profile",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"output\": $json.output } }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-00000000000b",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SKILLS_URL }}/soul",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000e",
+      "name": "Load Soul",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        20,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000f",
+      "name": "Merge Persona",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        160,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Search the user's document folder (resumes/CVs, certificates, transcripts, cover letters, notes, any text or Word docs they added). Formats: .txt .md .pdf .docx .doc. Always check here before claiming what experience, skills, or certificates the user has.",
+        "method": "POST",
+        "url": "={{ $env.SKILLS_URL }}/knowledge/search",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "query",
+              "valueProvider": "modelRequired"
+            },
+            {
+              "name": "k",
+              "valueProvider": "fieldValue",
+              "value": "6"
+            },
+            {
+              "name": "full_doc",
+              "valueProvider": "modelRequired",
+              "description": "true to return complete matched documents instead of snippets (use for timeline/current-role questions)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000h",
+      "name": "search_docs",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Read the user's document folder in full. Call with no arguments (or name='all') to read EVERY document \u2014 use for 'read my folder/all my documents/database'. Call with a specific document name (seen in search_docs results) to read one document in full.",
+        "method": "POST",
+        "url": "={{ $env.SKILLS_URL }}/knowledge/read",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "parametersBody": {
+          "values": [
+            {
+              "name": "name",
+              "valueProvider": "modelRequired",
+              "description": "Document name to read (from search_cv), or 'all' to read the entire folder"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0000-4000-8000-0000000000i",
+      "name": "read_docs",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        340
+      ]
+    }
+  ],
+  "connections": {
+    "Agent Webhook": {
+      "main": [
+        [
+          {
+            "node": "Load Soul",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Persona",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Load Soul",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Persona",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM (via LiteLLM proxy)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Session Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "remember_memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_skills": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "run_skill": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "browse_web": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_profile": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Soul": {
+      "main": [
+        [
+          {
+            "node": "Merge Persona",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Persona": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_soul": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "read_docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

@@ -1,0 +1,28 @@
+model_list:
+  # Primary: same auto-router model n8n already uses, via LiteLLM's OpenRouter passthrough
+  - model_name: openrouter/free
+    litellm_params:
+      model: openrouter/openrouter/free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # Fallback 1: Google Gemini free tier
+  - model_name: gemini-flash-free
+    litellm_params:
+      model: gemini/gemini-2.0-flash
+      api_key: os.environ/GEMINI_API_KEY
+
+  # Fallback 2: Groq free tier (fast Llama)
+  - model_name: groq-llama
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: os.environ/GROQ_API_KEY
+
+litellm_settings:
+  num_retries: 2
+  request_timeout: 120
+  # When the primary fails (429 quota, outage), try these in order:
+  fallbacks:
+    - openrouter/free: ["gemini-flash-free", "groq-llama"]
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
