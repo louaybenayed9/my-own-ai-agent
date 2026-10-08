@@ -1,124 +1,370 @@
 # =====================================================================
 # MY PERSONAL PROFILE DATABASE
 # ---------------------------------------------------------------------
-# This file is your agent's single source of truth about you for job
-# applications. The agent reads it live via its get_profile tool, so:
-#   * Edit this file, save, and the agent sees changes IMMEDIATELY
-#     (no restart needed).
-#   * Replace EVERY sample value below with your real information.
-#   * Delete any section that does not apply to you.
-#   * Add any fields you want — the agent reads whatever is here.
+# Auto-generated from the documents in knowledge/docs/:
+#   - job experiance.docx
+#   - projects.docx
+#   - skills.docx
+#   - Confirmed Technical Skills Profile.docx
+#
+# The agent reads this live via its get_profile tool. Edits apply immediately
+# (no restart needed). Review every field - some come straight from the docs
+# and may still need your personal contact details or confirmation.
 # =====================================================================
 
 _meta:
-  last_updated: "2026-10-06"
-  note: "SAMPLE DATA — replace all values before real use"
+  last_updated: "2026-10-08"
+  sources:
+    - "knowledge/docs/job experiance.docx"
+    - "knowledge/docs/projects.docx"
+    - "knowledge/docs/skills.docx"
+    - "knowledge/docs/Confirmed Technical Skills Profile.docx"
+  note: "Populated from documents. Contact fields and some optional sections still need your input."
 
 # ---------------------------------------------------------------------
-# BASICS — contact details and where to find you online
+# BASICS - contact details and where to find you online
 # ---------------------------------------------------------------------
+# NOTE: none of these appear in the source documents. They stay as
+# placeholders until you fill them in.
 basics:
-  name: "Alex Sample"                     # REPLACE: your full name
-  email: "alex.sample@example.com"        # REPLACE
-  phone: "+1-555-0100"                    # REPLACE
-  location: "City, Country"               # REPLACE
-  linkedin: "https://linkedin.com/in/your-handle"   # REPLACE
-  github: "https://github.com/your-handle"          # REPLACE
-  portfolio: ""                           # REPLACE: personal site/URL (optional)
-  work_authorization: ""                  # e.g. "US Citizen", "EU work permit", "Needs sponsorship"
+  name: "Louay Benayed"                 # from context / confirmed profile
+  email: "louaybenayed9@gmail.com"                             # TODO: fill
+  phone: "96742254"                             # TODO: fill
+  location: "Ariana, Tunisia"  # from job experiance.docx (current role location)
+  linkedin: "www.linkedin.com/in/benayed-louay"                          # TODO: fill
+  github: "https://github.com/louaybenayed9/louay-benayed-portfolio"                            # TODO: fill
+  portfolio: ""                         # TODO: fill (optional)
+  work_authorization: ""                # TODO: e.g. Tunisian citizen, EU work permit, Needs sponsorship
 
 # ---------------------------------------------------------------------
-# SUMMARY — your elevator pitch (2-3 sentences the agent can reuse)
+# SUMMARY - your elevator pitch (2-3 sentences the agent can reuse)
 # ---------------------------------------------------------------------
 summary: >
-  REPLACE: e.g. "Software engineer with 4 years of experience building
-  backend services in Python and Go. Shipped features used by 100k+ users.
-  Looking for backend or platform engineering roles."
+  Final-year engineering intern (PFE) and freelance IT professional with hands-on
+  experience across full-stack development, embedded systems, IoT, and cybersecurity.
+  Built an IoT threat-detection platform (React 18, Django REST, Celery, Redis,
+  Django Channels) with NLP-based threat classification and VirusTotal integration,
+  and performed firmware reverse-engineering that exposed a command-injection
+  vulnerability in a D-Link camera. Comfortable across Python, C/C++, JavaScript,
+  STM32/ESP32, and AI-assisted workflows. Currently working in retail while pursuing
+  embedded / security / full-stack roles.
 
 # ---------------------------------------------------------------------
-# EDUCATION — most recent first
-# ---------------------------------------------------------------------
-education:
-  - school: "REPLACE: University name"
-    degree: "REPLACE: BSc Computer Science"
-    dates: "2019 - 2023"
-    highlights:
-      - "REPLACE: GPA, thesis, relevant coursework, honors"
-
-# ---------------------------------------------------------------------
-# WORK EXPERIENCE — most recent first; use action verbs + numbers
+# EXPERIENCE - from job experiance.docx
 # ---------------------------------------------------------------------
 experience:
-  - company: "REPLACE: Company name"
-    title: "REPLACE: Job title"
-    dates: "2023 - Present"
-    location: "REPLACE: City or Remote"
+  - role: "Stage de Fin d'\u00e9tudes (PFE) - IoT & Cybersecurity Engineer"
+    organization: "Next Step IT"
+    location: "Charguia, Ariana"
+    startDate: "2025-02"
+    endDate: "2025-06"
+    summary: >
+      Full-stack IoT threat-detection platform with NLP-based threat classification
+      and VirusTotal integration; firmware reverse-engineering of a D-Link IP camera;
+      ML pipeline for MITM attack detection.
     highlights:
-      - "REPLACE: Built X which improved Y by Z%"
-      - "REPLACE: Led/migrated/designed ..."
+      - "Conception and development of a full-stack IoT threat-detection platform (React 18, Django REST, Celery, Redis, Django Channels) with NLP-based threat classification (TF-IDF, BERT) and VirusTotal API integration."
+      - "Firmware reverse-engineering of a D-Link DCS-932L IP camera using Binwalk, Ghidra, and Radare2; identified an exploitable command-injection vulnerability."
+      - "Machine Learning pipeline for MITM attack detection on the ML-EdgeIIoT dataset, achieving 90% accuracy."
+      - "Hands-on network security practice with Fortinet firewall."
+
+  - role: "Support Informatique - Freelance IT Support"
+    organization: "Freelance"
+    location: "Tunisia"
+    startDate: "2021"
+    endDate: "Present"
+    summary: >
+      Over 30 IT interventions for individuals and small businesses: PC troubleshooting,
+      software fault resolution, formatting, workstation configuration, surveillance
+      camera installation, and wired network deployment.
+    highlights:
+      - "More than 30 IT troubleshooting interventions: PC repair, software fault resolution, formatting, and workstation configuration for individuals and small structures."
+      - "Installation and configuration of video surveillance (security cameras) for multiple clients."
+      - "Wiring and deployment of home/professional networks for 3+ households, including diagnostics and network fault resolution."
+
+  - role: "Agent de P\u00e9age - Toll Booth Operator"
+    organization: "P\u00e9age de Sidi Thabet"
+    location: "Sidi Thabet, Ariana"
+    startDate: "2023-07"
+    endDate: "2023-09"
+    summary: >
+      Customer-facing toll collection operator handling 1,200+ users per day with
+
+      accurate cash transactions and high-pressure vehicle flow management.
+    highlights:
+      - "Welcomed and advised over 1,200 users per day, ensuring fast and courteous service within a team."
+      - "Processed cash transactions accurately with no cash-register errors reported during the entire period."
+      - "Managed a steady high-pressure vehicle flow with consistent execution speed."
+
+  - role: "Vendeur & Conseiller Client - Sales Associate & Customer Advisor"
+    organization: "Supermarch\u00e9 Ben Yaghlane"
+    location: "Aouina, Ariana"
+    startDate: "2026-03"
+    endDate: "Present"
+    summary: >
+      Retail sales associate advising 200+ customers per day, managing product
+      availability and merchandising across store sections.
+    highlights:
+      - "Advises and accompanies more than 200 customers per day, ensuring a satisfying shopping experience."
+      - "Manages store sections and product shelving, ensuring product availability and presentation."
 
 # ---------------------------------------------------------------------
-# PROJECTS — personal or open-source work worth showing
+# PROJECTS - from projects.docx and Confirmed Technical Skills Profile.docx
 # ---------------------------------------------------------------------
 projects:
-  - name: "Personal AI Agent"
-    description: "Self-hosted AI agent (n8n + Python microservices) with browsing, persistent memory, and skill packs."
-    tech: ["Python", "Docker", "n8n", "FastAPI"]
-    link: ""
-  # - name: "REPLACE: another project"
+  - name: "Smart Travel Agent (Agent de Voyage Intelligent)"
+    organization: "Orange Digital Center"
+    summary: >
+      Designed an autonomous n8n agent leveraging RAG architecture connected with
+
+      Supabase Vector Store, Hugging Face models, and OpenRouter LLMs for intelligent
+      travel itinerary generation.
+    technologies:
+      - "n8n"
+      - "RAG (Retrieval-Augmented Generation)"
+      - "Supabase Vector Store"
+      - "Hugging Face models"
+      - "OpenRouter LLMs"
+      - "Firecrawl (web scraping)"
+      - "Google Sheets API"
+      - "Gmail API"
+      - "Claude Code / prompt engineering"
+    highlights:
+      - "AI & RAG Workflows: Designed an autonomous n8n agent leveraging RAG architecture connected with Supabase Vector Store, Hugging Face models, and OpenRouter LLMs."
+      - "Data Ingestion & APIs: Integrated Firecrawl for dynamic web extraction and external third-party APIs (weather data) for real-time itinerary enrichment."
+      - "Automation Pipelines: Structured automated data pipelines with Google Sheets synchronization and automated delivery via the Gmail API."
+      - "AI-Boosted Engineering: Leveraged Claude Code and prompt engineering to write JSON transformation scripts, configure n8n nodes, and debug flows."
+
+  - name: "IoT Threat-Detection Platform (PFE)"
+    organization: "Next Step IT (PFE)"
+    summary: >
+      Full-stack platform for detecting IoT threats: React 18 frontend, Django REST
+
+      backend with Celery + Redis async tasks, Django Channels for real-time updates,
+      NLP-based threat classification (TF-IDF, BERT), and VirusTotal API integration.
+    technologies:
+      - "React 18"
+      - "Django REST"
+      - "Celery"
+      - "Redis"
+      - "Django Channels"
+      - "TF-IDF"
+      - "BERT"
+      - "VirusTotal API"
+      - "Python"
+    highlights:
+      - "Built a full-stack IoT threat-detection platform with NLP-based threat classification and VirusTotal integration."
+      - "Developed an ML pipeline for MITM attack detection on the ML-EdgeIIoT dataset, reaching 90% accuracy."
+      - "Performed firmware reverse-engineering on a D-Link DCS-932L camera, exposing a command-injection vulnerability."
+
+  - name: "Outil de D\u00e9tection de Malware pour Firmware IoT (IA & API)"
+    organization: "Personal / Academic"
+    summary: >
+      Specialized security tool integrating AI/LLM models and the VirusTotal API to
+
+      scan and identify malware threats in connected device firmware, with structured
+
+      backend logging of alert data.
+    technologies:
+      - "LLM / AI models"
+      - "VirusTotal API"
+      - "Python"
+      - "Backend logging"
+    highlights:
+      - "D\u00e9veloppement d'un outil de s\u00e9curit\u00e9 sp\u00e9cialis\u00e9 int\u00e9grant des mod\u00e8les d'intelligence artificielle (LLM) et l'API VirusTotal pour scanner et identifier les menaces de logiciels malveillants dans les firmwares d'objets connect\u00e9s."
+      - "Gestion de l'ingestion des donn\u00e9es et de l'analyse des r\u00e9ponses de l'API, avec journalisation des alertes syst\u00e8me via une logique backend structur\u00e9e."
+
+  - name: "STM32 Hardware Access Control Firmware"
+    organization: "Academic / Personal"
+    summary: >
+      Bare-metal C firmware on an STM32 microcontroller (ARM Cortex-M) managing
+
+      hardware interrupts and peripheral communication for a hardware access-control
+
+      system.
+    technologies:
+      - "STM32 (ARM Cortex-M)"
+      - "C (bare-metal)"
+      - "Hardware interrupts"
+      - "Peripheral communication"
+
+  - name: "Environmental IoT Infrastructure Station (ESP32)"
+    organization: "Academic / Personal"
+    summary: >
+      Hardware sensor node built and assembled from scratch, tracking ambient
+
+      environmental metrics with wireless data transmission protocols.
+    technologies:
+      - "ESP32"
+      - "IoT sensors"
+      - "Wireless data transmission"
+
+  - name: "Industrial Automation System (Siemens S7-1200)"
+    organization: "Academic / Training"
+    summary: >
+      Programmed automated cycle routines and configured digital input/output modules
+
+      using TIA Portal for a Siemens S7-1200 PLC.
+    technologies:
+      - "Siemens S7-1200"
+      - "TIA Portal"
+      - "Ladder Logic"
+      - "Digital I/O modules"
+
+  - name: "Electronic Coded Access Hardware (STM32L031K6)"
+    organization: "Academic / Personal"
+    summary: >
+      Wired and implemented I2C communication protocols for LCD interfacing, analog
+
+      keypad matrix scanning, and hardware servo-motor actuation via PlatformIO.
+    technologies:
+      - "STM32L031K6"
+      - "I2C"
+      - "LCD interfacing"
+      - "Keypad matrix scanning"
+      - "Servo-motor actuation"
+      - "PlatformIO"
+
+  - name: "Ultrasonic Proximity Hardware Array (Arduino Uno)"
+    organization: "Academic / Personal"
+    summary: >
+      Real-time ultrasonic distance tracking system with progressive physical alerts,
+
+      engineered and simulated end-to-end.
+    technologies:
+      - "Arduino Uno"
+      - "Ultrasonic sensors"
+      - "Real-time distance tracking"
+      - "Physical alert system"
 
 # ---------------------------------------------------------------------
-# SKILLS — grouped; the agent pulls from here for ATS keyword matching
+# SKILLS - consolidated from skills.docx + Confirmed Technical Skills Profile.docx
 # ---------------------------------------------------------------------
 skills:
-  languages: ["Python", "REPLACE: ..."]
-  frameworks: ["FastAPI", "REPLACE: ..."]
-  tools: ["Docker", "Git", "REPLACE: ..."]
-  soft_skills: ["REPLACE: e.g. technical writing, mentoring"]
+  # -- Skills from skills.docx --
+  soft_and_domain:
+    - "Threat Detection"
+    - "Network Security"
+    - "Cybersecurity"
+    - "Privacy Information"
+    - "Network Simulation"
+    - "IPv4 Addresses"
+    - "Protocols & Standards"
+    - "Wireless Access"
+    - "Application Layer Services"
+    - "Network Types"
+    - "Application Programming Interfaces (API)"
+    - "AI Agent Development"
+    - "Debugging & Optimization"
+    - "Cashiering"
+    - "Object-oriented Languages"
 
-# ---------------------------------------------------------------------
-# CERTIFICATIONS & TRAINING
-# ---------------------------------------------------------------------
-certifications:
-  - name: "REPLACE: cert name (or delete section)"
-    issuer: "REPLACE"
-    year: "2025"
+  tools_and_platforms:
+    - "Tcpdump"
+    - "Radare2"
+    - "Ghidra"
+    - "Scapy"
+    - "Binwalk"
+    - "Firmware Analysis"
+    - "Embedded Systems"
+    - "Dev / IA (AI-assisted development)"
 
-# ---------------------------------------------------------------------
-# LANGUAGES YOU SPEAK
-# ---------------------------------------------------------------------
-languages_spoken:
-  - name: "REPLACE: e.g. Arabic"
-    level: "Native"
-  - name: "English"
-    level: "Fluent"
+  # -- Confirmed Technical Skills Profile.docx --
+  technical:
+    
+    # 1. Telecommunications, Wireless & RF Engineering
+    rf_and_telecom:
+      - "RF propagation fundamentals"
+      - "Antenna characteristics (gain, SNR, attenuation)"
+      - "Spectrum analyzers"
+      - "Signal debugging"
+      - "Cellular Networks: 2G/3G/4G/5G core vs. RAN architecture"
+      - "eNodeB / gNodeB concepts"
+      - "IP Routing & Switching (VLANs, Subnetting, OSPF)"
+      - "TCP/IP suite (DHCP, DNS, FTP, SSH)"
+      - "Wi-Fi standards"
+      - "Bluetooth/BLE"
+      - "Cisco IOS configuration"
+      - "Wireshark packet analysis"
 
-# ---------------------------------------------------------------------
-# AWARDS / ACHIEVEMENTS (optional — delete if empty)
-# ---------------------------------------------------------------------
-awards: []
-  # - "REPLACE: Hackathon winner 2024"
+    # 2. Embedded Systems, IoT & Hardware Security
+    embedded_iot:
+      - "STM32 (ARM Cortex-M)"
+      - "ESP32 / ESP8266"
+      - "Arduino Uno"
+      - "Raspberry Pi (Embedded Linux)"
+      - "Bare-metal C/C++ (pointers, register manipulation, bitwise operations, DMA)"
+      - "FreeRTOS"
+      - "I2C, SPI, UART, PWM"
+      - "Multimeter / Oscilloscope / Logic Analyzer debugging"
+      - "Firmware binary extraction & static analysis (Binwalk)"
+      - "PlatformIO"
+      - "Wokwi"
+      - "Keil"
+      - "STM32Cube"
 
-# ---------------------------------------------------------------------
-# JOB PREFERENCES — what you are looking for right now
-# ---------------------------------------------------------------------
-job_preferences:
-  target_roles: ["REPLACE: e.g. Backend Engineer", "Platform Engineer"]
-  industries: ["REPLACE: e.g. fintech, AI"]
-  locations: ["REPLACE: e.g. Remote (EU)", "Berlin"]
-  remote_ok: true
-  salary_expectation: ""                  # leave empty if private
-  notice_period: ""                       # e.g. "2 weeks", "immediate"
-  employment_types: ["full-time"]         # full-time, contract, internship
+    # 3. Industrial Automation & Control Systems
+    industrial_automation:
+      - "Siemens S7-1200 PLC programming"
+      - "Ladder Logic"
+      - "TIA Portal"
+      - "Modbus protocol"
+      - "HMI design & configuration"
 
-# ---------------------------------------------------------------------
-# APPLICATION EXTRAS — reusable answers the agent can adapt
-# ---------------------------------------------------------------------
-application_extras:
-  why_hire_me: >
-    REPLACE: 2-3 sentences on your strongest selling points.
-  strengths: ["REPLACE: strength 1", "REPLACE: strength 2"]
-  weaknesses: ""                          # optional; how you frame yours
-  career_goals: >
-    REPLACE: where you want to be in 3-5 years.
-  extra_notes: ""                         # anything else the agent should know
+    # 4. Software Engineering & Web Development
+    software_engineering:
+      languages:
+        - "Python"
+        - "C/C++"
+        - "JavaScript"
+      backend:
+        - "Django"
+        - "Flask"
+        - "Node.js / Express"
+        - "RESTful API design (Swagger/OpenAPI, Postman)"
+        - "Asynchronous programming & queues (Celery, Redis)"
+        - "WebSockets (real-time communication)"
+        - "Object-Oriented Design (SOLID principles)"
+        - "Monolithic vs. Microservices architecture"
+      frontend:
+        - "HTML5"
+        - "CSS3"
+        - "JavaScript"
+        - "React"
+      databases_and_tools:
+        - "PostgreSQL"
+        - "MySQL"
+        - "SQLite"
+        - "Git / GitHub version control"
+        - "Markdown documentation"
+      multimedia:
+        - "Video streaming protocols (RTSP, RTMP, HLS, IP cameras)"
+
+    # 5. Cybersecurity, Systems Administration & IT Support
+    cybersecurity_it:
+      security:
+        - "Malware static analysis"
+        - "VirusTotal API integration"
+        - "YARA rules"
+        - "Basic reverse engineering (Ghidra, GDB, IDA Pro)"
+        - "Basic Kali Linux tooling"
+      sysadmin:
+        - "Linux terminal navigation"
+        - "Shell scripting (Bash)"
+        - "OS installation"
+        - "IT hardware diagnostics & troubleshooting"
+        - "Virtualization (VirtualBox, VMware)"
+        - "Remote Support & Desktop Protocol tools (AnyDesk, TeamViewer, RDP)"
+      data_ai:
+        - "Pandas"
+        - "NumPy"
+        - "Machine Learning fundamentals (Scikit-Learn classification models)"
+        - "NoSQL databases (MongoDB, Redis)"
+
+    # 6. AI-Assisted Workflows & Technical Tooling
+    ai_workflow:
+      - "AI-driven debugging, C/Python boilerplate generation, and code optimization (ChatGPT, Claude, GitHub Copilot)"
+      - "Automated architecture flowcharts and sequence diagrams (Mermaid.js, PlantUML)"
+
+referencedBy: {}
+
